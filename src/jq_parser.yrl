@@ -194,8 +194,8 @@ build_compound(Children) ->
 build_identity() ->
   build_ast_node('IdentityExpression', #{}).
 
-build_const(Name, Dollar) ->
-  build_ast_node('ConstantExpression', #{ 'name' => Name, 'dollar' => Dollar }).
+build_const(Name, Variable) ->
+  build_ast_node('ConstantExpression', #{ 'name' => Name, 'variable' => Variable }).
 
 build_break(LabelToken) ->
   build_ast_node('BreakExpression', #{ 'label' => extract_token(LabelToken) }).

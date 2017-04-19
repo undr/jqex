@@ -458,8 +458,8 @@ defmodule JQex.Lang.ParserTest do
   end
 
   test "Constant expression" do
-    assert_parse "$a", %{ kind: :Document, expressions: [%{ kind: :ConstantExpression, dollar: true, name: "a" }] }
-    assert_parse "a", %{ kind: :Document, expressions: [%{ kind: :ConstantExpression, dollar: false, name: "a" }] }
+    assert_parse "$a", %{ kind: :Document, expressions: [%{ kind: :ConstantExpression, variable: true, name: "a" }] }
+    assert_parse "a", %{ kind: :Document, expressions: [%{ kind: :ConstantExpression, variable: false, name: "a" }] }
   end
 
   test "Function call" do
