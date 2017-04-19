@@ -420,7 +420,7 @@ defmodule JQex.Lang.ParserTest do
   test "Optional index expression" do
     assert_parse ". .a?", %{
       kind: :Document,
-      expressions: [%{ kind: :IndexExpression, key: "a", object: %{ kind: :IdentityExpression }, optional: true }]
+      expressions: [%{ kind: :IndexExpression, key: "a", input: %{ kind: :IdentityExpression }, optional: true }]
     }
 
     assert_parse ".a?", %{ kind: :Document, expressions: [%{ kind: :IndexExpression, key: "a", optional: true }] }
@@ -429,7 +429,7 @@ defmodule JQex.Lang.ParserTest do
   test "Index expression" do
     assert_parse ". .a", %{
       kind: :Document,
-      expressions: [%{ kind: :IndexExpression, key: "a", object: %{ kind: :IdentityExpression }, optional: false }]
+      expressions: [%{ kind: :IndexExpression, key: "a", input: %{ kind: :IdentityExpression }, optional: false }]
     }
 
     assert_parse ".a", %{ kind: :Document, expressions: [%{ kind: :IndexExpression, key: "a", optional: false }] }
@@ -457,9 +457,9 @@ defmodule JQex.Lang.ParserTest do
     # assert_parse "1050e-10", %{ kind: :Document, expressions: [] }
   end
 
-  test "Ident expression" do
-    assert_parse "$a", %{ kind: :Document, expressions: [%{ kind: :IdentExpression, dollar: true, name: "a" }] }
-    assert_parse "a", %{ kind: :Document, expressions: [%{ kind: :IdentExpression, dollar: false, name: "a" }] }
+  test "Constant expression" do
+    assert_parse "$a", %{ kind: :Document, expressions: [%{ kind: :ConstantExpression, dollar: true, name: "a" }] }
+    assert_parse "a", %{ kind: :Document, expressions: [%{ kind: :ConstantExpression, dollar: false, name: "a" }] }
   end
 
   test "Function call" do
