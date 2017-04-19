@@ -146,7 +146,11 @@ Term -> string_value       : extract_quoted_string_token('$1').
 Term -> float_value        : extract_float('$1').
 Term -> int_value          : extract_integer('$1').
 Term -> '$' ident          : build_const(extract_token('$2'), true).
-% TODO: Handling special constants, like: null, true, false...
+% TODO: Handling special constants, like: empty, null, true, false...
+% Perhaps, we can predefine these constants in the constants table.
+% So, we just leave this rules as is. All constant expressions should refer to
+% constants table. Therefore, special constants will be visible in runtime without
+% any changes in this bunch of rules.
 Term -> ident              : build_const(extract_token('$1'), false).
 Term -> ident '(' ')'      : build_call(extract_token('$1'), []).
 Term -> ident '(' Args ')' : build_call(extract_token('$1'), lists:reverse('$3')).
