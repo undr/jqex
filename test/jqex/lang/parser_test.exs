@@ -10,11 +10,9 @@ defmodule JQex.Lang.ParserTest do
     }] }, :error
 
     assert_parse "a\n\"b\nc", %{ errors: [%{
-      "message" => "JQex: Illegal expression '\"b\n' on line 2",
+      "message" => "JQex: Illegal expression: '\"b\n' on line 2",
       "line_number" => 2
     }] }, :error
-
-    JQex.Lang.Parser.parse("c\n\"vv\nv")
   end
 
   test "Handle unicode in string values" do

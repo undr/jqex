@@ -13,7 +13,7 @@ defmodule JQex.Lang.Lexer do
 
   defp format_result({ :error, { line_number, :jq_lexer, { :illegal, exp } }, _ }) do
     { :error, %{ errors: [
-      %{ "message" => "JQex: Illegal expression '#{exp}' on line #{line_number}", "line_number" => line_number }
+      %{ "message" => "JQex: Illegal expression: '#{exp}' on line #{line_number}", "line_number" => line_number }
     ] } }
   end
 end
