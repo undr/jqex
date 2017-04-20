@@ -77,7 +77,8 @@ defmodule JQex.Lang.ParserTest do
       expressions: [%{
         kind: :FuncCallExpression,
         name: :_assign,
-        arguments: [%{ kind: :IndexExpression, key: "x", optional: false }, 1]
+        input: %{ kind: :IndexExpression, key: "x", optional: false },
+        arguments: [1]
       }]
     }
 
@@ -87,7 +88,8 @@ defmodule JQex.Lang.ParserTest do
         %{
           kind: :FuncCallExpression,
           name: :_modify,
-          arguments: [%{ kind: :IndexExpression, key: "a", optional: false }, %{ kind: :IdentityExpression }]
+          input: %{ kind: :IndexExpression, key: "a", optional: false },
+          arguments: [%{ kind: :IdentityExpression }]
         }
       ]
     }
@@ -97,10 +99,8 @@ defmodule JQex.Lang.ParserTest do
       expressions: [%{
         kind: :FuncCallExpression,
         name: :_plus,
-        arguments: [
-          %{ kind: :IndexExpression, key: "a", optional: false },
-          %{ kind: :IndexExpression, key: "b", optional: false }
-        ]
+        input: %{ kind: :IndexExpression, key: "a", optional: false },
+        arguments: [%{ kind: :IndexExpression, key: "b", optional: false }]
       }]
     }
 
@@ -109,17 +109,13 @@ defmodule JQex.Lang.ParserTest do
       expressions: [%{
         kind: :FuncCallExpression,
         name: :_modify,
-        arguments: [
-          %{ kind: :IndexExpression, key: "a", optional: false },
-          %{
-            kind: :FuncCallExpression,
-            name: :_plus,
-            arguments: [
-              %{ key: "a", kind: :IndexExpression, optional: false },
-              %{ key: "b", kind: :IndexExpression, optional: false }
-            ]
-          }
-        ]
+        input: %{ kind: :IndexExpression, key: "a", optional: false },
+        arguments: [%{
+          kind: :FuncCallExpression,
+          name: :_plus,
+          input: %{ key: "a", kind: :IndexExpression, optional: false },
+          arguments: [%{ key: "b", kind: :IndexExpression, optional: false }]
+        }]
       }]
     }
 
@@ -128,7 +124,8 @@ defmodule JQex.Lang.ParserTest do
       expressions: [%{
         kind: :FuncCallExpression,
         name: :_negate,
-        arguments: [%{ kind: :IndexExpression, key: "a", optional: false }]
+        input: %{ kind: :IndexExpression, key: "a", optional: false },
+        arguments: []
       }]
     }
 
@@ -137,10 +134,8 @@ defmodule JQex.Lang.ParserTest do
       expressions: [%{
         kind: :FuncCallExpression,
         name: :_minus,
-        arguments: [
-          %{ kind: :IndexExpression, key: "a", optional: false },
-          %{ kind: :IndexExpression, key: "b", optional: false }
-        ]
+        input: %{ kind: :IndexExpression, key: "a", optional: false },
+        arguments: [%{ kind: :IndexExpression, key: "b", optional: false }]
       }]
     }
 
@@ -149,17 +144,13 @@ defmodule JQex.Lang.ParserTest do
       expressions: [%{
         kind: :FuncCallExpression,
         name: :_modify,
-        arguments: [
-          %{ kind: :IndexExpression, key: "a", optional: false },
-          %{
-            kind: :FuncCallExpression,
-            name: :_minus,
-            arguments: [
-              %{ key: "a", kind: :IndexExpression, optional: false },
-              %{ key: "b", kind: :IndexExpression, optional: false }
-            ]
-          }
-        ]
+        input: %{ kind: :IndexExpression, key: "a", optional: false },
+        arguments: [%{
+          kind: :FuncCallExpression,
+          name: :_minus,
+          input: %{ kind: :IndexExpression, key: "a", optional: false },
+          arguments: [%{ key: "b", kind: :IndexExpression, optional: false }]
+        }]
       }]
     }
 
@@ -168,10 +159,8 @@ defmodule JQex.Lang.ParserTest do
       expressions: [%{
         kind: :FuncCallExpression,
         name: :_multiply,
-        arguments: [
-          %{ kind: :IndexExpression, key: "a", optional: false },
-          %{ kind: :IndexExpression, key: "b", optional: false }
-        ]
+        input: %{ kind: :IndexExpression, key: "a", optional: false },
+        arguments: [%{ kind: :IndexExpression, key: "b", optional: false }]
       }]
     }
 
@@ -180,17 +169,13 @@ defmodule JQex.Lang.ParserTest do
       expressions: [%{
         kind: :FuncCallExpression,
         name: :_modify,
-        arguments: [
-          %{ kind: :IndexExpression, key: "a", optional: false },
-          %{
-            kind: :FuncCallExpression,
-            name: :_multiply,
-            arguments: [
-              %{ key: "a", kind: :IndexExpression, optional: false },
-              %{ key: "b", kind: :IndexExpression, optional: false }
-            ]
-          }
-        ]
+        input: %{ kind: :IndexExpression, key: "a", optional: false },
+        arguments: [%{
+          kind: :FuncCallExpression,
+          name: :_multiply,
+          input: %{ key: "a", kind: :IndexExpression, optional: false },
+          arguments: [%{ key: "b", kind: :IndexExpression, optional: false }]
+        }]
       }]
     }
 
@@ -199,10 +184,8 @@ defmodule JQex.Lang.ParserTest do
       expressions: [%{
         kind: :FuncCallExpression,
         name: :_divide,
-        arguments: [
-          %{ kind: :IndexExpression, key: "a", optional: false },
-          %{ kind: :IndexExpression, key: "b", optional: false }
-        ]
+        input: %{ kind: :IndexExpression, key: "a", optional: false },
+        arguments: [%{ kind: :IndexExpression, key: "b", optional: false }]
       }]
     }
 
@@ -211,17 +194,13 @@ defmodule JQex.Lang.ParserTest do
       expressions: [%{
         kind: :FuncCallExpression,
         name: :_modify,
-        arguments: [
-          %{ kind: :IndexExpression, key: "a", optional: false },
-          %{
-            kind: :FuncCallExpression,
-            name: :_divide,
-            arguments: [
-              %{ key: "a", kind: :IndexExpression, optional: false },
-              %{ key: "b", kind: :IndexExpression, optional: false }
-            ]
-          }
-        ]
+        input: %{ kind: :IndexExpression, key: "a", optional: false },
+        arguments: [%{
+          kind: :FuncCallExpression,
+          name: :_divide,
+          input: %{ key: "a", kind: :IndexExpression, optional: false },
+          arguments: [%{ key: "b", kind: :IndexExpression, optional: false }]
+        }]
       }]
     }
 
@@ -230,10 +209,8 @@ defmodule JQex.Lang.ParserTest do
       expressions: [%{
         kind: :FuncCallExpression,
         name: :_mod,
-        arguments: [
-          %{ kind: :IndexExpression, key: "a", optional: false },
-          %{ kind: :IndexExpression, key: "b", optional: false }
-        ]
+        input: %{ kind: :IndexExpression, key: "a", optional: false },
+        arguments: [%{ kind: :IndexExpression, key: "b", optional: false }]
       }]
     }
 
@@ -242,17 +219,13 @@ defmodule JQex.Lang.ParserTest do
       expressions: [%{
         kind: :FuncCallExpression,
         name: :_modify,
-        arguments: [
-          %{ kind: :IndexExpression, key: "a", optional: false },
-          %{
-            kind: :FuncCallExpression,
-            name: :_mod,
-            arguments: [
-              %{ key: "a", kind: :IndexExpression, optional: false },
-              %{ key: "b", kind: :IndexExpression, optional: false }
-            ]
-          }
-        ]
+        input: %{ kind: :IndexExpression, key: "a", optional: false },
+        arguments: [%{
+          kind: :FuncCallExpression,
+          name: :_mod,
+          input: %{ kind: :IndexExpression, key: "a", optional: false },
+          arguments: [%{ key: "b", kind: :IndexExpression, optional: false }]
+        }]
       }]
     }
 
@@ -261,10 +234,8 @@ defmodule JQex.Lang.ParserTest do
       expressions: [%{
         kind: :FuncCallExpression,
         name: :_equal,
-        arguments: [
-          %{ kind: :IndexExpression, key: "a", optional: false },
-          %{ kind: :IndexExpression, key: "b", optional: false }
-        ]
+        input: %{ kind: :IndexExpression, key: "a", optional: false },
+        arguments: [%{ kind: :IndexExpression, key: "b", optional: false }]
       }]
     }
 
@@ -273,10 +244,8 @@ defmodule JQex.Lang.ParserTest do
       expressions: [%{
         kind: :FuncCallExpression,
         name: :_notequal,
-        arguments: [
-          %{ kind: :IndexExpression, key: "a", optional: false },
-          %{ kind: :IndexExpression, key: "b", optional: false }
-        ]
+        input: %{ kind: :IndexExpression, key: "a", optional: false },
+        arguments: [%{ kind: :IndexExpression, key: "b", optional: false }]
       }]
     }
 
@@ -285,10 +254,8 @@ defmodule JQex.Lang.ParserTest do
       expressions: [%{
         kind: :FuncCallExpression,
         name: :_less,
-        arguments: [
-          %{ kind: :IndexExpression, key: "a", optional: false },
-          %{ kind: :IndexExpression, key: "b", optional: false }
-        ]
+        input: %{ kind: :IndexExpression, key: "a", optional: false },
+        arguments: [%{ kind: :IndexExpression, key: "b", optional: false }]
       }]
     }
 
@@ -297,10 +264,8 @@ defmodule JQex.Lang.ParserTest do
       expressions: [%{
         kind: :FuncCallExpression,
         name: :_greater,
-        arguments: [
-          %{ kind: :IndexExpression, key: "a", optional: false },
-          %{ kind: :IndexExpression, key: "b", optional: false }
-        ]
+        input: %{ kind: :IndexExpression, key: "a", optional: false },
+        arguments: [%{ kind: :IndexExpression, key: "b", optional: false }]
       }]
     }
 
@@ -309,10 +274,8 @@ defmodule JQex.Lang.ParserTest do
       expressions: [%{
         kind: :FuncCallExpression,
         name: :_lesseq,
-        arguments: [
-          %{ kind: :IndexExpression, key: "a", optional: false },
-          %{ kind: :IndexExpression, key: "b", optional: false }
-        ]
+        input: %{ kind: :IndexExpression, key: "a", optional: false },
+        arguments: [%{ kind: :IndexExpression, key: "b", optional: false }]
       }]
     }
 
@@ -321,10 +284,8 @@ defmodule JQex.Lang.ParserTest do
       expressions: [%{
         kind: :FuncCallExpression,
         name: :_greatereq,
-        arguments: [
-          %{ kind: :IndexExpression, key: "a", optional: false },
-          %{ kind: :IndexExpression, key: "b", optional: false }
-        ]
+        input: %{ kind: :IndexExpression, key: "a", optional: false },
+        arguments: [%{ kind: :IndexExpression, key: "b", optional: false }]
       }]
     }
   end
@@ -406,7 +367,12 @@ defmodule JQex.Lang.ParserTest do
   test "Recurse expression" do
     assert_parse "..", %{
       kind: :Document,
-      expressions: [%{ kind: :FuncCallExpression, name: :recurse, arguments: [] }]
+      expressions: [%{
+        kind: :FuncCallExpression,
+        name: :recurse,
+        input: %{ kind: :IdentityExpression },
+        arguments: []
+      }]
     }
   end
 
@@ -463,12 +429,22 @@ defmodule JQex.Lang.ParserTest do
   end
 
   test "Function call" do
-    assert_parse "c()", %{ kind: :Document, expressions: [%{ kind: :FuncCallExpression, arguments: [], name: "c" }] }
+    assert_parse "c()", %{
+      kind: :Document,
+      expressions: [%{
+        kind: :FuncCallExpression,
+        name: "c",
+        input: %{ kind: :IdentityExpression },
+        arguments: []
+      }]
+    }
+
     assert_parse "c(.a; .b)", %{
       kind: :Document,
       expressions: [%{
         kind: :FuncCallExpression,
         name: "c",
+        input: %{ kind: :IdentityExpression },
         arguments: [
           %{ kind: :IndexExpression, key: "a", optional: false },
           %{ kind: :IndexExpression, key: "b", optional: false }

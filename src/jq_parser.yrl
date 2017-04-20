@@ -57,23 +57,6 @@ FuncDefs -> FuncDef FuncDefs : ['$1'|'$2'].
 
 % Exp
 % TODO:
-% - Add `input` attribute to be able override an input of function
-%   Each function has an input and arguments.
-%   For example: `length/0` has zero arity and it calculates length of input.
-%                `map/1` has arity equals one, that means the `map/1` has access to an argument besides an input.
-%                See definition of the `map/1`: `def map(f): [.[] | f];`
-%   You can access input using `.` expression.
-%   Strictly talking, operator functions have arity equals one and first argument should be an input.
-%   Input should be equal `.` by default.
-%   Example:
-%   1 + 2 => #{ kind: :FuncCallExpression, name: '_plus', input: 1, arguments: [2] }
-%   length => #{
-%     kind: :FuncCallExpression,
-%     name: 'length',
-%     input: #{ kind: IdentityExpression },
-%     arguments: []
-%   }
-%
 % - Inline func definitions
 % - Variable / Symbolic Binding Operator
 % - Reduce, foreach and if/then/else
@@ -81,29 +64,29 @@ FuncDefs -> FuncDef FuncDefs : ['$1'|'$2'].
 Exp -> try Exps catch Exps : build_try('$2', '$4').
 Exp -> try Exps            : build_try('$2').
 Exp -> Exp '?'           : build_try('$1').
-Exp -> Exp '=' Exp       : build_call('_assign', ['$1', '$3']).
+Exp -> Exp '=' Exp       : build_call('_assign', ['$3'], '$1').
 % Exp -> Exp 'or' Exp  : build_binary('or', '$1', '$3').
 % Exp -> Exp 'and' Exp : build_binary('and', '$1', '$3').
 % Exp -> Exp '//' Exp  : build_binary('//', '$1', '$3').
 % Exp -> Exp '//=' Exp : build_binary('//=', '$1', '$3').
-Exp -> Exp '|=' Exp      : build_call('_modify', ['$1', '$3']).
-Exp -> Exp '+' Exp       : build_call('_plus', ['$1', '$3']).
+Exp -> Exp '|=' Exp      : build_call('_modify', ['$3'], '$1').
+Exp -> Exp '+' Exp       : build_call('_plus', ['$3'], '$1').
 Exp -> Exp '+=' Exp      : build_update('_plus', '$1', '$3').
-Exp -> '-' Exp           : build_call('_negate', ['$2']).
-Exp -> Exp '-' Exp       : build_call('_minus', ['$1', '$3']).
+Exp -> '-' Exp           : build_call('_negate', [], '$2').
+Exp -> Exp '-' Exp       : build_call('_minus', ['$3'], '$1').
 Exp -> Exp '-=' Exp      : build_update('_minus', '$1', '$3').
-Exp -> Exp '*' Exp       : build_call('_multiply', ['$1', '$3']).
+Exp -> Exp '*' Exp       : build_call('_multiply', ['$3'], '$1').
 Exp -> Exp '*=' Exp      : build_update('_multiply', '$1', '$3').
-Exp -> Exp '/' Exp       : build_call('_divide', ['$1', '$3']).
+Exp -> Exp '/' Exp       : build_call('_divide', ['$3'], '$1').
 Exp -> Exp '/=' Exp      : build_update('_divide', '$1', '$3').
-Exp -> Exp '%' Exp       : build_call('_mod', ['$1', '$3']).
+Exp -> Exp '%' Exp       : build_call('_mod', ['$3'], '$1').
 Exp -> Exp '%=' Exp      : build_update('_mod', '$1', '$3').
-Exp -> Exp '==' Exp      : build_call('_equal', ['$1', '$3']).
-Exp -> Exp '!=' Exp      : build_call('_notequal', ['$1', '$3']).
-Exp -> Exp '<' Exp       : build_call('_less', ['$1', '$3']).
-Exp -> Exp '>' Exp       : build_call('_greater', ['$1', '$3']).
-Exp -> Exp '<=' Exp      : build_call('_lesseq', ['$1', '$3']).
-Exp -> Exp '>=' Exp      : build_call('_greatereq', ['$1', '$3']).
+Exp -> Exp '==' Exp      : build_call('_equal', ['$3'], '$1').
+Exp -> Exp '!=' Exp      : build_call('_notequal', ['$3'], '$1').
+Exp -> Exp '<' Exp       : build_call('_less', ['$3'], '$1').
+Exp -> Exp '>' Exp       : build_call('_greater', ['$3'], '$1').
+Exp -> Exp '<=' Exp      : build_call('_lesseq', ['$3'], '$1').
+Exp -> Exp '>=' Exp      : build_call('_greatereq', ['$3'], '$1').
 % TODO: Need to add handling of parentheseless compound node `.x, .y, .z`
 Exp -> '(' Compound ')'  : build_compound('$2').
 Exp -> Term              : '$1'.
@@ -113,11 +96,11 @@ Compound -> Exp ',' Exp      : ['$1', '$3'].
 Compound -> Exp ',' Compound : ['$1'|'$3'].
 
 % Exps
-Exps -> Exp               : ['$1'].
-Exps -> Exp '|' Exps      : ['$1'|'$3'].
+Exps -> Exp          : ['$1'].
+Exps -> Exp '|' Exps : ['$1'|'$3'].
 
 % FuncDef
-FuncDef -> def ident ':' Exps ';' :                build_def(extract_token('$2'), [], '$4').
+FuncDef -> def ident ':' Exps ';'                : build_def(extract_token('$2'), [], '$4').
 FuncDef -> def ident '(' Params ')' ':' Exps ';' : build_def(extract_token('$2'), '$4', '$7').
 
 % Params
@@ -145,12 +128,12 @@ Term -> field              : build_index(extract_token('$1'), false).
 Term -> string_value       : extract_quoted_string_token('$1').
 Term -> float_value        : extract_float('$1').
 Term -> int_value          : extract_integer('$1').
-Term -> '$' ident          : build_const(extract_token('$2'), true).
 % TODO: Handling special constants, like: empty, null, true, false...
 % Perhaps, we can predefine these constants in the constants table.
 % So, we just leave this rules as is. All constant expressions should refer to
 % constants table. Therefore, special constants will be visible in runtime without
 % any changes in this bunch of rules.
+Term -> '$' ident          : build_const(extract_token('$2'), true).
 Term -> ident              : build_const(extract_token('$1'), false).
 Term -> ident '(' ')'      : build_call(extract_token('$1'), []).
 Term -> ident '(' Args ')' : build_call(extract_token('$1'), lists:reverse('$3')).
@@ -215,11 +198,30 @@ build_try(Exp) ->
 build_try(Exp, Handler) ->
   build_ast_node('TryExpression', #{ 'block' => Exp, 'handler' => Handler }).
 
+% An `input` attribute needs to override an input of function.
+% Each function has an input and arguments.
+% For example: `length/0` has zero arity and it calculates length of input.
+%              `map/1` has arity equals one, that means the `map/1` has access to an argument besides an input.
+%              See definition of the `map/1`: `def map(f): [.[] | f];`
+% You can access input using `.` expression.
+% Operator functions have arity equals one and first argument should be an input.
+% In other cases input should be equal `.`.
+%   Example:
+%   1 + 2 => #{ kind: :FuncCallExpression, name: '_plus', input: 1, arguments: [2] }
+%   length => #{
+%     kind: :FuncCallExpression,
+%     name: 'length',
+%     input: #{ kind: IdentityExpression },
+%     arguments: []
+%   }
 build_call(Function, Args) ->
-  build_ast_node('FuncCallExpression', #{ 'name' => Function, 'arguments' => Args }).
+  build_ast_node('FuncCallExpression', #{ 'name' => Function, 'input' => build_identity(), 'arguments' => Args }).
+
+build_call(Function, Args, Input) ->
+  build_ast_node('FuncCallExpression', #{ 'name' => Function, 'input' => Input, 'arguments' => Args }).
 
 build_update(Operator, Left, Right) ->
-  build_call('_modify', [Left, build_call(Operator, [Left, Right])]).
+  build_call('_modify', [build_call(Operator, [Right], Left)], Left).
 
 add_attributes_to_node(Node, Attrs) ->
   maps:merge(Attrs, Node).
