@@ -4,7 +4,17 @@ defmodule JQex.Lang.ParserTest do
   import ExUnit.TestHelpers
 
   test "Report error with message" do
-    assert_parse "a)", %{ errors: [%{ "message" => "JQex: syntax error before: ')' on line 1", "line_number" => 1 }] }, :error
+    assert_parse "a)", %{ errors: [%{
+      "message" => "JQex: syntax error before: ')' on line 1",
+      "line_number" => 1
+    }] }, :error
+
+    assert_parse "a\n\"b\nc", %{ errors: [%{
+      "message" => "JQex: Illegal expression '\"b\n' on line 2",
+      "line_number" => 2
+    }] }, :error
+
+    JQex.Lang.Parser.parse("c\n\"vv\nv")
   end
 
   test "Handle unicode in string values" do

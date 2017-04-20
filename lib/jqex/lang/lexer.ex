@@ -4,7 +4,16 @@ defmodule JQex.Lang.Lexer do
   end
 
   def tokenize(input_string) do
-    {:ok, tokens, _} = :jq_lexer.string(input_string)
-    tokens
+    input_string |> :jq_lexer.string |> format_result
+  end
+
+  defp format_result({ :ok, tokens, _}) do
+    { :ok, tokens }
+  end
+
+  defp format_result({ :error, { line_number, :jq_lexer, { :illegal, exp } }, _ }) do
+    { :error, %{ errors: [
+      %{ "message" => "JQex: Illegal expression '#{exp}' on line #{line_number}", "line_number" => line_number }
+    ] } }
   end
 end
